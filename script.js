@@ -35,7 +35,7 @@ function displayLibrary(bookArray) {
 
     bookArray.forEach(element => {
         const card = document.createElement('div');
-        card.classname = 'card';
+        card.className = 'card';
 
         const title = document.createElement('h2');
         title.textContent = element.Name;
@@ -49,10 +49,29 @@ function displayLibrary(bookArray) {
         const synopsis = document.createElement('p');
         synopsis.textContent = `Synopsis: ${element.Synopsis}`;
 
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+
+        const readButton = document.createElement('button');
+        readButton.textContent = element.Read ? 'Read' : 'Not Read';
+        readButton.addEventListener('click', () => {
+            element.Read = !element.Read;
+            readButton.textContent = element.Read ? 'Read' : 'Not Read';
+        });
+        
+        card.appendChild(readButton);
         card.appendChild(title);
         card.appendChild(author);
         card.appendChild(year);
         card.appendChild(synopsis);
+        card.appendChild(deleteButton);
+        deleteButton.addEventListener('click', () => {
+            const index = myLibrary.findIndex(book => book.ID === element.ID);
+            if (index !== -1) {
+                myLibrary.splice(index, 1);
+                displayLibrary(myLibrary);
+            }
+        });
         container.appendChild(card);
     });
 }
